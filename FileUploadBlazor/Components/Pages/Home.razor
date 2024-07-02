@@ -1,0 +1,48 @@
+﻿@page "/"
+
+<PageTitle>Upload Demo App</PageTitle>
+
+<h1>Upload Demo</h1>
+
+<InputFile OnChange="@LoadFiles" multiple />
+
+@if (errors.Count > 0)
+{
+    <h2>Errors</h2>
+    <ul class="text-danger">
+        @foreach (var error in errors)
+        {
+            <li>@error</li>
+        }
+
+    </ul>
+}
+
+@code {
+    private long maxFileSize = 1024 * 1024 * 3;  //3 MB,,,  WE CAN PUT THIS TO THE APP SETTINGS
+    private int maxAllowedFiles = 3;
+    private List<string> errors = new();
+
+
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+
+        //we doing fresh upload letst clear
+        errors.Clear();
+        //check file being uploaded
+        if (e.FileCount > maxAllowedFiles)
+        {
+            errors.Add($"Attempting to upload : {e.FileCount} but only {maxAllowedFiles} are being allowed");
+            return;
+        }
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+
+            //let start creating  a place to store.....
+            //we dont want to trust user it might duplicate our code...
+
+        }
+    }
+}
